@@ -3,12 +3,12 @@
 #include <string.h>
 #include <locale.h>
 
-// Fun√ß√£o para tratar erros do usu√°rio
+// FunÁ„o para tratar erros do usu·rio
 int lerNumero() {
     int numero;
     
     while (scanf("%d", &numero) != 1) {
-        printf("\nOp√ß√£o Inv√°lida! Digite um n√∫mero: \n ");
+        printf("\nOpÁ„o Inv·lida! Digite um n˙mero: \n ");
         // Limpa o buffer de entrada
         while (getchar() != '\n');
     }
@@ -35,34 +35,34 @@ typedef struct no {
 
 typedef t_no *t_arvore;
 
-//exibir (raiz - esquerda - direita)
+//exibir PrÈ-ordem (raiz - esquerda - direita)
 void exibirPreOrdem(t_arvore tree) {
 	if(tree!=NULL){
-		printf("%s - %d", tree->dado.nome, tree->dado.rgm);
+		printf("%s - %d\n", tree->dado.nome, tree->dado.rgm);
 		exibirPreOrdem(tree->esq);
 		exibirPreOrdem(tree->dir);
 	}
 }
 
-//exibir (esquerda - raiz - direita)
+//exibir In-ordem(esquerda - raiz - direita)
 void exibirInOrdem(t_arvore tree) {
 	if(tree!=NULL){
 		exibirInOrdem(tree->esq);
-		printf("%s - %d", tree->dado.nome, tree->dado.rgm);
+		printf("%s - %d\n", tree->dado.nome, tree->dado.rgm);
 		exibirInOrdem(tree->dir);
 	}
 }
 
-//exibir (esquerda - direita - raiz)
+//exibir PÛs-ordem(esquerda - direita - raiz)
 void exibirPosOrdem(t_arvore tree) {
 	if(tree!=NULL){
 		exibirPosOrdem(tree->esq);
 		exibirPosOrdem(tree->dir);
-		printf("%s - %d", tree->dado.nome, tree->dado.rgm);
+		printf("%s - %d\n", tree->dado.nome, tree->dado.rgm);
 	}
 }
 
-// Cria um n√≥ vazio
+// Cria um nÛ vazio
 t_no *criar() {
 	t_no *no = (t_no*) malloc(sizeof(t_no));
 	
@@ -73,7 +73,7 @@ t_no *criar() {
 	return no;
 }
 
-// Verifica se um n√≥ est√° vazio
+// Verifica se um nÛ est· vazio
 int isVazia(t_no *no){
 	return (no == NULL);
 }
@@ -225,27 +225,28 @@ int main(int argc, char *argv[]) {
 	
 	int op;
 	t_elemento aluno;
-	t_arvore tree;
+	t_arvore tree = NULL;
 	
 	do{
 	system("cls");
 	printf("\nDisciplina: Estrutura de Dados 1\n");
 	printf("Professor: Walace Bonfim\n");
-	printf("\n\tEDITOR DE √ÅRVORE\n\n");
+	printf("\n\tEDITOR DE ¡RVORE\n\n");
 	printf("1 - Inserir\n");
-	printf("2 - Remover um n√≥\n");
+	printf("2 - Remover um nÛ\n");
 	printf("3 - Pesquisar\n");
-	printf("4 - Esvaziar a √Årvore\n");
-	printf("5 - Exibir a √Årvore\n");
+	printf("4 - Esvaziar a ¡rvore\n");
+	printf("5 - Exibir a ¡rvore\n");
 	printf("0 - Sair\n\n");
-	printf("Digite sua op√ß√£o: ");
+	printf("Digite sua opÁ„o: ");
 	op = lerNumero();
 	
 	switch(op){
 		case 1:{
+			printf("\n----------------------------------------");
 			printf("\nDigite o nome do aluno: \n");
-			lerTexto(aluno.nome, sizeof(aluno.nome));
 			while (getchar() != '\n');
+			lerTexto(aluno.nome, sizeof(aluno.nome));			
 			printf("\nDigite o RGM do aluno: \n");
 		    aluno.rgm = lerNumero();
 		    
@@ -268,7 +269,26 @@ int main(int argc, char *argv[]) {
 			break;
 		}
 		case 5:{
-			printf("Exibir...\n");
+			int opExibir;
+			
+			printf("\n----------------------------------------");
+			printf("\n\tEXIBI«√O\n\n1 = PrÈ-ordem \n2 - In-ordem \n3 - PÛs-ordem\n");
+			printf("\nDigite sua opÁ„o: ");
+			opExibir = lerNumero();
+			
+			if(opExibir == 1){
+				exibirPreOrdem(tree);
+				printf("\n");
+			} else if(opExibir == 2){
+				exibirInOrdem(tree);
+				printf("\n");
+			} else if(opExibir == 3){
+				exibirPosOrdem(tree);
+				printf("\n");
+			} else {
+				printf("OpÁ„o inv·lida!");
+			}
+			
 			break;
 		}
 		case 0:{
@@ -276,13 +296,13 @@ int main(int argc, char *argv[]) {
 			break;
 		}
 		default:{
-			printf("Op√ß√£o inv√°lida!\n");
+			printf("OpÁ„o inv·lida!\n");
 			break;
 		}
 	}
 	
 	if (op != 0) {
-		printf("\nDigite '1' para voltar ao menu, ou '0' para encerrar o programa.\n");
+		printf("\nDigite '1' para voltar ao menu ou '0' para encerrar o programa.\n");
 		op = lerNumero();
 		}
 		
