@@ -3,18 +3,19 @@
 #include <string.h>
 #include <locale.h>
 
-// Fun��o para tratar erros do usu�rio
+// Função para tratar erros do usuário ao ler um número
 int lerNumero() {
     int numero;
     
     while (scanf("%d", &numero) != 1) {
-        printf("\nOp��o Inv�lida! Digite um n�mero: \n ");
+        printf("\nOpção Inválida! Digite um número: \n ");
         // Limpa o buffer de entrada
         while (getchar() != '\n');
     }
     return numero;
 }
 
+// Função para ler um texto da entrada padrão (stdin)
 void lerTexto(char *texto, int tamanho) {
     fgets(texto, tamanho, stdin);
     // Remover o caractere de nova linha
@@ -22,20 +23,23 @@ void lerTexto(char *texto, int tamanho) {
     
 }
 
+// Definição da estrutura de dados para um elemento da árvore
 typedef struct elementos {
 	int rgm;
 	char nome[100];
 }t_elemento;
 
+// Definição da estrutura de um nó da árvore binária
 typedef struct no {
 	struct no *esq;
 	t_elemento dado;
 	struct no *dir;
 }t_no;
 
+// Definição do tipo abstrato de dados Árvore Binária
 typedef t_no *t_arvore;
 
-//exibir Pr�-ordem (raiz - esquerda - direita)
+//exibir Pré-ordem (raiz - esquerda - direita)
 void exibirPreOrdem(t_arvore tree) {
 	if(tree!=NULL){
 		printf("%s - %d\n", tree->dado.nome, tree->dado.rgm);
@@ -53,7 +57,7 @@ void exibirInOrdem(t_arvore tree) {
 	}
 }
 
-//exibir P�s-ordem(esquerda - direita - raiz)
+//exibir Pós-ordem(esquerda - direita - raiz)
 void exibirPosOrdem(t_arvore tree) {
 	if(tree!=NULL){
 		exibirPosOrdem(tree->esq);
@@ -62,7 +66,7 @@ void exibirPosOrdem(t_arvore tree) {
 	}
 }
 
-// Cria um n� vazio
+// Função para criar um nó vazio
 t_no *criar() {
 	t_no *no = (t_no*) malloc(sizeof(t_no));
 	
@@ -73,12 +77,12 @@ t_no *criar() {
 	return no;
 }
 
-// Verifica se um n� est� vazio
+// Verifica se um nó está vazio
 int isVazia(t_no *no){
 	return (no == NULL);
 }
 
-// Compara dois dados
+// Função para comparar dois dados
 int compara(t_elemento dado1, t_elemento dado2) {
     if (dado1.rgm < dado2.rgm) {
         return -1;
@@ -89,6 +93,7 @@ int compara(t_elemento dado1, t_elemento dado2) {
     }
 }
 
+// Função para buscar um elemento na árvore
 t_no *busca(t_arvore tree, t_elemento dado) {
 	t_no *achou;
 	
@@ -109,6 +114,7 @@ t_no *busca(t_arvore tree, t_elemento dado) {
 	return achou;
 }
 
+// Função para inserir um elemento na árvore
 int inserir(t_arvore *tree, t_elemento item) {
     int ok;
 	
@@ -137,6 +143,7 @@ int inserir(t_arvore *tree, t_elemento item) {
 	return ok;
 }
 
+// Função para esvaziar a árvore
 void esvaziar(t_arvore *tree){
 	if(*tree==NULL){
 		return;
@@ -148,6 +155,7 @@ void esvaziar(t_arvore *tree){
 	*tree = NULL;
 }
 
+// Função para buscar um elemento na árvore e seu pai
 t_no *buscaSetPai(t_arvore tree, t_elemento dado, t_no **pai){
 	if(tree==NULL){
 		*pai = NULL;
@@ -170,6 +178,7 @@ t_no *buscaSetPai(t_arvore tree, t_elemento dado, t_no **pai){
 	}
 }
 
+// Função para remover um elemento da árvore
 int remover(t_arvore *tree, t_elemento item) {
 	t_no *no, *pai, *sub, *paiSuce, *suce;
 	no = *tree;
@@ -231,18 +240,18 @@ int main(int argc, char *argv[]) {
 	system("cls");
 	printf("\nDisciplina: Estrutura de Dados 1\n");
 	printf("Professor: Walace Bonfim\n");
-	printf("\n\tEDITOR DE �RVORE\n\n");
+	printf("\n\tEDITOR DE ÁRVORE\n\n");
 	printf("1 - Inserir\n");
-	printf("2 - Remover um n�\n");
+	printf("2 - Remover um nó\n");
 	printf("3 - Pesquisar\n");
-	printf("4 - Esvaziar a �rvore\n");
-	printf("5 - Exibir a �rvore\n");
+	printf("4 - Esvaziar a Árvore\n");
+	printf("5 - Exibir a Árvore\n");
 	printf("0 - Sair\n\n");
-	printf("Digite sua op��o: ");
+	printf("Digite sua opção: ");
 	op = lerNumero();
 	
 	switch(op){
-		case 1:{
+		case 1:{ // Inserir um nó na árvore
 			printf("\n----------------------------------------");
 			printf("\nDigite o nome do aluno: \n");
 			while (getchar() != '\n');
@@ -256,24 +265,24 @@ int main(int argc, char *argv[]) {
 			printf("\nErro ao inserir aluno!\n");
 			break;
 		}
-		case 2:{
+		case 2:{ // Remover um nó da árvore
 			printf("Remover...\n");
 			break;
 		}
-		case 3:{
+		case 3:{ // Pesquisar um nó na árvore
 			printf("Pesquisar...\n");
 			break;
 		}
-		case 4:{
+		case 4:{ // Esvaziar a árvore
 			printf("Esvaziar...\n");
 			break;
 		}
-		case 5:{
+		case 5:{ // Exibir a árvore
 			int opExibir;
 			
 			printf("\n----------------------------------------");
-			printf("\n\tEXIBI��O\n\n1 = Pr�-ordem \n2 - In-ordem \n3 - P�s-ordem\n");
-			printf("\nDigite sua op��o: ");
+			printf("\n\tEXIBIÇÃO\n\n1 - Pré-ordem \n2 - In-ordem \n3 - Pós-ordem\n");
+			printf("\nDigite sua opção: ");
 			opExibir = lerNumero();
 			
 			if(opExibir == 1){
@@ -286,21 +295,22 @@ int main(int argc, char *argv[]) {
 				exibirPosOrdem(tree);
 				printf("\n");
 			} else {
-				printf("Op��o inv�lida!");
+				printf("Opção inválida!");
 			}
 			
 			break;
 		}
-		case 0:{
+		case 0:{ // Sair do programa
 			printf("Saindo...\n");
 			break;
 		}
 		default:{
-			printf("Op��o inv�lida!\n");
+			printf("Opção inválida!\n");
 			break;
 		}
 	}
 	
+	// Verificar se o usuário deseja continuar
 	if (op != 0) {
 		printf("\nDigite '1' para voltar ao menu ou '0' para encerrar o programa.\n");
 		op = lerNumero();
