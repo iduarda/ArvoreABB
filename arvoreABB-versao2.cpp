@@ -3,22 +3,31 @@
 #include <string.h>
 #include <locale.h>
 
-/* √Årvore Bin√°ria de Busca */
 
-// Fun√ß√£o para tratar erros do usu√°rio
+
+// FunÁ„o para tratar erros do usu·rio
 int lerNumero() {
     int numero;
     
     while (scanf("%d", &numero) != 1) {
-        printf("\nOp√ß√£o Inv√°lida! Digite um n√∫mero: \n ");
+        printf("\nOpÁ„o Inv·lida! Digite um n˙mero: \n ");
         // Limpa o buffer de entrada
         while (getchar() != '\n');
     }
     return numero;
 }
 
+void lerTexto(char *texto, int tamanho) {
+    fgets(texto, tamanho, stdin);
+    // Remover o caractere de nova linha
+    texto[strcspn(texto, "\n")] = '\0';
+    
+}
+
+
+
 typedef struct elementos {
-	char rgm[20];
+	int rgm;
 	char nome[100];
 }t_elemento;
 
@@ -57,7 +66,7 @@ void exibirPosOrdem(t_arvore tree) {
 	}
 }
 
-// Cria um n√≥ vazio
+// Cria um nÛ vazio
 t_no *criar() {
 	t_no *no = (t_no*) malloc(sizeof(t_no));
 	
@@ -68,14 +77,20 @@ t_no *criar() {
 	return no;
 }
 
-// Verifica se um n√≥ √© vazio
+// Verifica se um Û est· vazio
 int isVazia(t_no *no){
 	return (no == NULL);
 }
 
 // Compara dois dados
 int compara(t_elemento dado1, t_elemento dado2) {
-	return strcmp(dado1.rgm, dado2.rgm);
+    if (dado1.rgm < dado2.rgm) {
+        return -1;
+    } else if (dado1.rgm > dado2.rgm) {
+        return 1;
+    } else {
+        return 0;
+    }
 }
 
 t_no *busca(t_arvore tree, t_elemento dado) {
@@ -113,18 +128,20 @@ int inserir(t_arvore *tree, t_elemento item) {
 	return 1;	
 	}
 	
-	if(compara((*tree)->dado, item) < 0){
-		ok  = inserir(&((*tree)->dir), item);
-	}else{
-		if(compara((*tree)->dado, item) > 0){
-			ok = inserir(&((*tree)->esq), item);
-		}else{
-			ok = 0;
-		}
-	}
+	if (compara((*tree)->dado, item) < 0) {
+        ok = inserir(&((*tree)->dir), item);
+    } else {
+        if (compara((*tree)->dado, item) > 0) {
+            ok = inserir(&((*tree)->esq), item);
+        } else {
+            ok = 0;
+        }
+    }
 	
 	return ok;
 }
+
+
 
 void esvaziar(t_arvore *tree){
 	if(*tree==NULL){
@@ -216,19 +233,32 @@ int main(int argc, char *argv[]) {
 	
 	do{
 	system("cls");
-	printf("\n\tEDITOR DE √ÅRVORE\n\n");
+	printf("\nDisciplina: Estrutura de Dados 1\n");
+	printf("Professor: Walace Bonfim\n");
+	printf("\n\tEDITOR DE ¡RVORE\n\n");
 	printf("1 - Inserir\n");
-	printf("2 - Remover um n√≥\n");
+	printf("2 - Remover um nÛ\n");
 	printf("3 - Pesquisar\n");
-	printf("4 - Esvaziar a √°rvore\n");
-	printf("5 - Exibir a √°rvore\n");
+	printf("4 - Esvaziar a ¡rvore\n");
+	printf("5 - Exibir a ¡rvore\n");
 	printf("0 - Sair\n\n");
-	printf("Digite sua op√ß√£o: ");
+	printf("Digite sua opÁ„o: ");
 	op = lerNumero();
 	
 	switch(op){
 		case 1:{
-			printf("Inserir...\n");
+			t_elemento aluno;
+			t_arvore tree;
+			printf("\n Digite o nome do aluno: \n");
+			lerTexto(aluno.nome, sizeof(aluno.nome));
+			while (getchar() != '\n');
+			printf("\n Digite o RGM do aluno: \n");
+		    aluno.rgm = lerNumero();
+		    
+			if(inserir(&tree,aluno))
+			printf("\n Aluno inserido com sucesso!\n ");
+			else
+			printf("\nErro ao inserir aluno\n!");
 			break;
 		}
 		case 2:{
@@ -252,7 +282,7 @@ int main(int argc, char *argv[]) {
 			break;
 		}
 		default:{
-			printf("Op√ß√£o inv√°lida!\n");
+			printf("OpÁ„o inv·lida!\n");
 			break;
 		}
 	}
