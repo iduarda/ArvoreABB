@@ -252,7 +252,7 @@ int main(int argc, char *argv[]) {
 			if(inserir(&tree,aluno))
 			printf("\nAluno inserido com sucesso!\n ");
 			else
-			printf("\nErro ao inserir aluno\n!");
+			printf("\nErro ao inserir aluno!\n");
 			break;
 		}
 		case 2:{
