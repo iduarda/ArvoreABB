@@ -3,42 +3,42 @@
 #include <string.h>
 #include <locale.h>
 
-// FunÁ„o para tratar erros do usu·rio ao ler um n˙mero
+// Fun√ß√£o para tratar erros do usu√°rio ao ler um n√∫mero
 int lerNumero() {
     int numero;
     
     while (scanf("%d", &numero) != 1) {
-        printf("\nOpÁ„o Inv·lida! Digite um n˙mero: \n ");
+        printf("\nOp√ß√£o Inv√°lida! Digite um n√∫mero: \n ");
         // Limpa o buffer de entrada
         while (getchar() != '\n');
     }
     return numero;
 }
 
-// FunÁ„o para ler um texto da entrada padr„o (stdin)
+// Fun√ß√£o para ler um texto da entrada padr√£o (stdin)
 void lerTexto(char *texto, int tamanho) {
     fgets(texto, tamanho, stdin);
     // Remover o caractere de nova linha
     texto[strcspn(texto, "\n")] = '\0';
 }
 
-// DefiniÁ„o da estrutura de dados para um elemento da ¡rvore
+// Defini√ß√£o da estrutura de dados para um elemento da √Årvore
 typedef struct elementos {
 	int rgm;
 	char nome[100];
 }t_elemento;
 
-// DefiniÁ„o da estrutura de um nÛ da ¡rvore Bin·ria
+// Defini√ß√£o da estrutura de um n√≥ da √Årvore Bin√°ria
 typedef struct no {
 	struct no *esq;
 	t_elemento dado;
 	struct no *dir;
 }t_no;
 
-// DefiniÁ„o do tipo abstrato de dados ¡rvore Bin·ria
+// Defini√ß√£o do tipo abstrato de dados √Årvore Bin√°ria
 typedef t_no *t_arvore;
 
-//exibir PrÈ-ordem (raiz - esquerda - direita)
+//exibir Pr√©-ordem (raiz - esquerda - direita)
 void exibirPreOrdem(t_arvore tree) {
 	if(tree!=NULL){
 		printf("%s - %d\n", tree->dado.nome, tree->dado.rgm);
@@ -56,7 +56,7 @@ void exibirInOrdem(t_arvore tree) {
 	}
 }
 
-//exibir PÛ-ordem(esquerda - direita - raiz)
+//exibir P√≥-ordem(esquerda - direita - raiz)
 void exibirPosOrdem(t_arvore tree) {
 	if(tree!=NULL){
 		exibirPosOrdem(tree->esq);
@@ -65,7 +65,7 @@ void exibirPosOrdem(t_arvore tree) {
 	}
 }
 
-// FunÁ„o para criar um nÛ vazio
+// Fun√ß√£o para criar um n√≥ vazio
 t_no *criar() {
 	t_no *no = (t_no*) malloc(sizeof(t_no));
 	
@@ -76,12 +76,12 @@ t_no *criar() {
 	return no;
 }
 
-// Verifica se um nÛ est· vazio
+// Verifica se um n√≥ est√° vazio
 int isVazia(t_no *no){
 	return (no == NULL);
 }
 
-// FunÁ„o para comparar dois dados
+// Fun√ß√£o para comparar dois dados
 int compara(t_elemento dado1, t_elemento dado2) {
     if (dado1.rgm < dado2.rgm) {
         return -1;
@@ -92,7 +92,7 @@ int compara(t_elemento dado1, t_elemento dado2) {
     }
 }
 
-// FunÁ„o para buscar um elemento na ¡rvore
+// Fun√ß√£o para buscar um elemento na √Årvore
 t_no *busca(t_arvore tree, t_elemento dado) {
 	t_no *achou;
 	
@@ -113,7 +113,7 @@ t_no *busca(t_arvore tree, t_elemento dado) {
 	return achou;
 }
 
-// FunÁ„o para inserir um elemento na ¡rvore
+// Fun√ß√£o para inserir um elemento na √Årvore
 int inserir(t_arvore *tree, t_elemento item) {
     int ok;
 	
@@ -142,7 +142,7 @@ int inserir(t_arvore *tree, t_elemento item) {
 	return ok;
 }
 
-// FunÁ„o para esvaziar a ¡rvore
+// Fun√ß√£o para esvaziar a √Årvore
 void esvaziar(t_arvore *tree){
 	if(*tree==NULL){
 		return;
@@ -154,7 +154,7 @@ void esvaziar(t_arvore *tree){
 	*tree = NULL;
 }
 
-// FunÁ„o para buscar um elemento na ¡rvore e seu pai
+// Fun√ß√£o para buscar um elemento na √Årvore e seu pai
 t_no *buscaSetPai(t_arvore tree, t_elemento dado, t_no **pai){
 	if(tree==NULL){
 		*pai = NULL;
@@ -177,7 +177,7 @@ t_no *buscaSetPai(t_arvore tree, t_elemento dado, t_no **pai){
 	}
 }
 
-// FunÁ„o para remover um elemento da ¡rvore
+// Fun√ß√£o para remover um elemento da √Årvore
 int remover(t_arvore *tree, t_elemento item) {
 	t_no *no, *pai, *sub, *paiSuce, *suce;
 	no = *tree;
@@ -228,6 +228,24 @@ int remover(t_arvore *tree, t_elemento item) {
 	return 1;
 }
 
+// Fun√ß√£o para carregar dados de um arquivo para a √°rvore
+void arquivoTxt(const char *nomeArquivo, t_arvore *tree) {
+	FILE *arquivo = fopen(nomeArquivo, "r");
+	
+	if(arquivo == NULL){
+		printf("Erro ao abril o arquivo %s.\n", nomeArquivo);
+		return;
+	}
+	
+	t_elemento aluno;
+	
+	while(fscanf(arquivo, "%d %[^\n]", &aluno.rgm, aluno.nome) == 2){
+		inserir(tree, aluno);
+	}
+	
+	fclose(arquivo);
+}
+
 int main(int argc, char *argv[]) {
 	setlocale(LC_ALL, "Portuguese");
 	
@@ -235,110 +253,113 @@ int main(int argc, char *argv[]) {
 	t_elemento aluno;
 	t_arvore tree = NULL;
 	
+	arquivoTxt("alunos.txt", &tree);
+	
 	do{
-	system("cls");
-	printf("\nDisciplina: Estrutura de Dados 1\n");
-	printf("Professor: Walace Bonfim\n");
-	printf("\n\tEDITOR DE ¡RVORE\n\n");
-	printf("1 - Inserir\n");
-	printf("2 - Remover um nÛ\n");
-	printf("3 - Pesquisar\n");
-	printf("4 - Esvaziar a ·rvore\n");
-	printf("5 - Exibir a ·rvore\n");
-	printf("0 - Sair\n\n");
-	printf("Digite sua opÁ„o: ");
-	op = lerNumero();
-	
-	switch(op){
-		case 1:{ // Inserir um nÛ na ¡rvore
-			printf("\n----------------------------------------");
-			printf("\nDigite o nome do aluno: \n");
-			while (getchar() != '\n');
-			lerTexto(aluno.nome, sizeof(aluno.nome));			
-			printf("\nDigite o RGM do aluno: \n");
-		    aluno.rgm = lerNumero();
-		    
-			if(inserir(&tree,aluno))
-			printf("\nAluno inserido com sucesso!\n ");
-			else
-			printf("\nErro ao inserir aluno!\n");
-			break;
-		}
-		case 2:{ // Remover um nÛ da ¡rvore
-		    printf("\n----------------------------------------");
-			printf("\nDigite o RGM do aluno a remover: \n");
-		    aluno.rgm = lerNumero();
-		    if(remover(&tree,aluno))
-			printf("\nAluno removido com sucesso!\n ");
-			else
-			printf("\nErro ao remover aluno!\n");
-			break;
-		}
-		case 3:{ // Pesquisar um nÛ na ¡rvore
-			printf("\n----------------------------------------");
-			printf("\nDigite o RGM do aluno que deseja pesquisar: \n");
-			aluno.rgm = lerNumero();
-			
-			t_no *resultado = busca(tree,aluno);
-			
-			if(resultado != NULL) {
-				printf("\nAluno encontrado: %s - %d\n", resultado->dado.nome, resultado->dado.rgm);
-			} else { 
-				printf("\nAluno com o RGM %d n„o foi encontrado!\n", aluno.rgm);
-			}
-			break;
-		}
-		case 4:{ // Esvaziar a ¡rvore
-		    printf("\n----------------------------------------");
-			printf("\nTem certeza que deseja esvaziar a ·rvore? \n1 - Sim \n2 - N„o \n");
-			int op = lerNumero();
-			if(op == 1) {
-			    esvaziar(&tree);
-			    printf("\n¡rvore esvaziada com sucesso!\n");
-			}else{
-				printf("\n¡rvore N√O foi esvaziada.\n");
-			}
-			break;
-		}
-		case 5:{ // Exibir a ¡rvore
-			int opExibir;
-			
-			printf("\n----------------------------------------");
-			printf("\n\tEXIBI«√O\n\n1 - PrÈ-ordem \n2 - In-ordem \n3 - PÛs-ordem\n");
-			printf("\nDigite sua opÁ„o: ");
-			opExibir = lerNumero();
-			
-			if(opExibir == 1){
-				exibirPreOrdem(tree);
-				printf("\n");
-			} else if(opExibir == 2){
-				exibirInOrdem(tree);
-				printf("\n");
-			} else if(opExibir == 3){
-				exibirPosOrdem(tree);
-				printf("\n");
-			} else {
-				printf("OpÁ„o inv·lida!");
-			}
-			
-			break;
-		}
-		case 0:{ // Sair do programa
-			printf("Fim do programa!\n");
-			break;
-		}
-		default:{
-			printf("OpÁ„o inv·lida!\n");
-			break;
-		}
-	}
-	
-	// Verificar se o usu·rio deseja continuar
-	if (op != 0) {
-		printf("\nDigite '1' para voltar ao menu ou '0' para encerrar o programa.\n");
+		system("cls");
+		printf("\nDisciplina: Estrutura de Dados 1\n");
+		printf("\nAlunos: Anna Maria, Anthony, Maria Eduarda, Miguel, Milena e Rafael\n");
+		printf("Professor: Walace Bonfim\n");
+		printf("\n\tEDITOR DE √ÅRVORE\n\n");
+		printf("1 - Inserir\n");
+		printf("2 - Remover um n√≥\n");
+		printf("3 - Pesquisar\n");
+		printf("4 - Esvaziar a √°rvore\n");
+		printf("5 - Exibir a √°rvore\n");
+		printf("0 - Sair\n\n");
+		printf("Digite sua op√ß√£o: ");
 		op = lerNumero();
+		
+		switch(op){
+			case 1:{ // Inserir um n√≥ na √Årvore
+				printf("\n----------------------------------------");
+				printf("\nDigite o nome do aluno: \n");
+				while (getchar() != '\n');
+				lerTexto(aluno.nome, sizeof(aluno.nome));			
+				printf("\nDigite o RGM do aluno: \n");
+			    aluno.rgm = lerNumero();
+			    
+				if(inserir(&tree,aluno))
+				printf("\nAluno inserido com sucesso!\n ");
+				else
+				printf("\nErro ao inserir aluno!\n");
+				break;
+			}
+			case 2:{ // Remover um n√≥ da √Årvore
+			    printf("\n----------------------------------------");
+				printf("\nDigite o RGM do aluno a remover: \n");
+			    aluno.rgm = lerNumero();
+			    if(remover(&tree,aluno))
+				printf("\nAluno removido com sucesso!\n ");
+				else
+				printf("\nErro ao remover aluno!\n");
+				break;
+			}
+			case 3:{ // Pesquisar um n√≥ na √Årvore
+				printf("\n----------------------------------------");
+				printf("\nDigite o RGM do aluno que deseja pesquisar: \n");
+				aluno.rgm = lerNumero();
+				
+				t_no *resultado = busca(tree,aluno);
+				
+				if(resultado != NULL) {
+					printf("\nAluno encontrado: %s - %d\n", resultado->dado.nome, resultado->dado.rgm);
+				} else { 
+					printf("\nAluno com o RGM %d n√£o foi encontrado!\n", aluno.rgm);
+				}
+				break;
+			}
+			case 4:{ // Esvaziar a √Årvore
+			    printf("\n----------------------------------------");
+				printf("\nTem certeza que deseja esvaziar a √°rvore? \n1 - Sim \n2 - N√£o \n");
+				int op = lerNumero();
+				if(op == 1) {
+				    esvaziar(&tree);
+				    printf("\n√Årvore esvaziada com sucesso!\n");
+				}else{
+					printf("\n√Årvore N√ÉO foi esvaziada.\n");
+				}
+				break;
+			}
+			case 5:{ // Exibir a √Årvore
+				int opExibir;
+				
+				printf("\n----------------------------------------");
+				printf("\n\tEXIBI√á√ÉO\n\n1 - Pr√©-ordem \n2 - In-ordem \n3 - P√≥s-ordem\n");
+				printf("\nDigite sua op√ß√£o: ");
+				opExibir = lerNumero();
+				
+				if(opExibir == 1){
+					exibirPreOrdem(tree);
+					printf("\n");
+				} else if(opExibir == 2){
+					exibirInOrdem(tree);
+					printf("\n");
+				} else if(opExibir == 3){
+					exibirPosOrdem(tree);
+					printf("\n");
+				} else {
+					printf("Op√ß√£o inv√°lida!");
+				}
+				
+				break;
+			}
+			case 0:{ // Sair do programa
+				printf("Fim do programa!\n");
+				break;
+			}
+			default:{
+				printf("Op√ß√£o inv√°lida!\n");
+				break;
+			}
 		}
 		
+		// Verificar se o usu√°rio deseja continuar
+		if (op != 0) {
+			printf("\nDigite '1' para voltar ao menu ou '0' para encerrar o programa.\n");
+			op = lerNumero();
+			}
+			
 	}while(op != 0);
 	
 	return 0;
