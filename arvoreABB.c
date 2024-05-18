@@ -56,7 +56,7 @@ void exibirInOrdem(t_arvore tree) {
 	}
 }
 
-//exibir Pó-ordem(esquerda - direita - raiz)
+//exibir Pós-ordem(esquerda - direita - raiz)
 void exibirPosOrdem(t_arvore tree) {
 	if(tree!=NULL){
 		exibirPosOrdem(tree->esq);
